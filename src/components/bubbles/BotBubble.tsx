@@ -395,6 +395,22 @@ export const BotBubble = (props: Props) => {
     }
   };
 
+  const renderFileUploads = (item: Partial<FileUpload>) => {
+    console.log(item, 'item');
+
+    if (item?.mime?.startsWith('audio/')) {
+      const fileData = `${props.apiHost}/api/v1/get-upload-file?chatflowId=${props.chatflowid}&chatId=${props.chatId}&fileName=${item.name}`;
+      const src = (item.data as string) ?? fileData;
+      return (
+        <audio class="w-[200px] h-10 block bg-cover bg-center rounded-none text-transparent" controls>
+          Your browser does not support the <code>&lt;audio&gt;</code> tag.
+          <source src={src} type={item.mime} />
+        </audio>
+      );
+    }
+    return null;
+  };
+
   return (
     <div>
       <div class="flex flex-row justify-start mb-2 items-start host-container" style={{ 'margin-right': '50px' }}>
@@ -448,19 +464,27 @@ export const BotBubble = (props: Props) => {
               </For>
             </div>
           )}
-          {props.message.message && (
-            <span
-              ref={setBotMessageRef}
-              class="px-4 py-2 ml-2 max-w-full chatbot-host-bubble prose"
-              data-testid="host-bubble"
-              style={{
-                'background-color': props.backgroundColor ?? defaultBackgroundColor,
-                color: props.textColor ?? defaultTextColor,
-                'border-radius': '6px',
-                'font-size': props.fontSize ? `${props.fontSize}px` : `${defaultFontSize}px`,
-              }}
-            />
-          )}
+          <div
+            class="px-4 py-2 ml-2 max-w-full chatbot-host-bubble prose gap-2"
+            data-testid="host-bubble"
+            style={{
+              'background-color': props.backgroundColor ?? defaultBackgroundColor,
+              color: props.textColor ?? defaultTextColor,
+              'border-radius': '6px',
+              'font-size': props.fontSize ? `${props.fontSize}px` : `${defaultFontSize}px`,
+            }}
+          >
+            {props.message.fileUploads && props.message.fileUploads.length > 0 && (
+              <div class="flex flex-col items-start flex-wrap w-full  mr-10 mb-1">
+                <For each={props.message.fileUploads}>
+                  {(item) => {
+                    return renderFileUploads(item);
+                  }}
+                </For>
+              </div>
+            )}
+            {props.message.message && <span ref={setBotMessageRef} />}
+          </div>
           {props.message.action && (
             <div class="px-4 py-2 flex flex-row justify-start space-x-2">
               <For each={props.message.action.elements || []}>
