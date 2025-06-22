@@ -558,15 +558,29 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
    */
   const addChatMessage = (allMessage: MessageType[]) => {
     const messages = allMessage.map((item) => {
-      if (item.fileUploads) {
-        const fileUploads = item?.fileUploads.map((file) => ({
-          type: file.type,
-          name: file.name,
-          mime: file.mime,
-        }));
-        return { ...item, fileUploads };
+      let parsedMessage = item.message;
+      let extractedFileUploads = [];
+  
+      if (typeof item.message === 'string' && item.message.trim().startsWith('{')) {
+        try {
+          const json = JSON.parse(item.message);
+          parsedMessage = json.message ?? '';
+          extractedFileUploads = json.fileUploads ?? [];
+        } catch (e) {
+          // message is not a JSON object, leave as is
+        }
       }
-      return item;
+  console.log(item,"item");
+  
+      const finalFileUploads = item.fileUploads?.length
+        ? item.fileUploads
+        : extractedFileUploads;
+  
+      return {
+        ...item,
+        message: parsedMessage,
+        fileUploads: finalFileUploads
+      };
     });
     setLocalStorageChatflow(props.chatflowid, chatId(), { chatHistory: messages });
   };
@@ -1111,9 +1125,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
           if (i === data.length - 2 && item.type === 'userMessage') {
             if (item.fileUploads) {
               const fileUploads = item?.fileUploads.map((file) => ({
-                type: file.type,
-                name: file.name,
-                mime: file.mime,
+                ...file
               }));
               return { ...item, fileUploads };
             }
@@ -2001,12 +2013,12 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
                 />
               )}
             </div>
-            <Badge
+            {/* <Badge
               footer={props.footer}
               badgeBackgroundColor={props.badgeBackgroundColor}
               poweredByTextColor={props.poweredByTextColor}
               botContainer={botContainer}
-            />
+            /> */}
           </div>
         </div>
       )}
