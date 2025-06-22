@@ -560,7 +560,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     const messages = allMessage.map((item) => {
       let parsedMessage = item.message;
       let extractedFileUploads = [];
-  
+
       if (typeof item.message === 'string' && item.message.trim().startsWith('{')) {
         try {
           const json = JSON.parse(item.message);
@@ -570,16 +570,14 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
           // message is not a JSON object, leave as is
         }
       }
-  console.log(item,"item");
-  
-      const finalFileUploads = item.fileUploads?.length
-        ? item.fileUploads
-        : extractedFileUploads;
-  
+      console.log(item, 'item');
+
+      const finalFileUploads = item.fileUploads?.length ? item.fileUploads : extractedFileUploads;
+
       return {
         ...item,
         message: parsedMessage,
-        fileUploads: finalFileUploads
+        fileUploads: finalFileUploads,
       };
     });
     setLocalStorageChatflow(props.chatflowid, chatId(), { chatHistory: messages });
@@ -1125,7 +1123,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
           if (i === data.length - 2 && item.type === 'userMessage') {
             if (item.fileUploads) {
               const fileUploads = item?.fileUploads.map((file) => ({
-                ...file
+                ...file,
               }));
               return { ...item, fileUploads };
             }
