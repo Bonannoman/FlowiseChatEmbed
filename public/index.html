@@ -18,11 +18,11 @@
 <body>
     <div id="root"></div>
     <script type="module">
-        import Chatbot from 'https://cdn.jsdelivr.net/gh/Bonannoman/FlowiseChatEmbed/dist/web.js';
-        Chatbot.init({
-          chatflowid: 'agent1',
-          apiHost: 'https://flowise.maxdiscipline.com:3001',
-        });
+      import Chatbot from './web.js';
+      Chatbot.init({
+        chatflowid: 'agent1',
+        apiHost: 'https://embed.maxdiscipline.com/proxy'
+      });
     </script>
 </body>
 
