@@ -603,23 +603,23 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       if (typeof item.message === 'string' && item.message.trim().startsWith('{')) {
         try {
           const json = JSON.parse(item.message);
-          console.log("In message",json)
+          console.log('In message', json);
           parsedMessage = json.message ?? '';
           extractedFileUploads = json.fileUploads ?? [];
-          videoLink = json.videoUrl
+          videoLink = json.videoUrl;
         } catch (e) {
           // message is not a JSON object, leave as is
         }
       }
-      
+
       const finalFileUploads = item.fileUploads?.length ? item.fileUploads : extractedFileUploads;
-      console.log(finalFileUploads, 'finalFileUploads',videoLink);
+      console.log(finalFileUploads, 'finalFileUploads', videoLink);
 
       return {
         ...item,
         message: parsedMessage,
         fileUploads: finalFileUploads,
-        videoUrl: videoLink
+        videoUrl: videoLink,
       };
     });
     setLocalStorageChatflow(props.chatflowid, chatId(), { chatHistory: messages });
@@ -1352,7 +1352,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
               if (message.agentFlowExecutedData)
                 chatHistory.agentFlowExecutedData =
                   typeof message.agentFlowExecutedData === 'string' ? JSON.parse(message.agentFlowExecutedData) : message.agentFlowExecutedData;
-              if (message.videoUrl) chatHistory.videoUrl = message.videoUrl
+              if (message.videoUrl) chatHistory.videoUrl = message.videoUrl;
               return chatHistory;
             })
           : [{ message: props.welcomeMessage ?? defaultWelcomeMessage, type: 'apiMessage' }];
