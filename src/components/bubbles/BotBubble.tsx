@@ -351,6 +351,8 @@ export const BotBubble = (props: Props) => {
       </>
     );
   };
+  console.log(props,"props");
+  
 
   const formatDateTime = (dateTimeString: string | undefined, showDate: boolean | undefined, showTime: boolean | undefined) => {
     if (!dateTimeString) return '';
@@ -396,8 +398,6 @@ export const BotBubble = (props: Props) => {
   };
 
   const renderFileUploads = (item: Partial<FileUpload>) => {
-    console.log(item, 'item');
-
     if (item?.mime?.startsWith('audio/')) {
       const fileData = `${props.apiHost}/api/v1/get-upload-file?chatflowId=${props.chatflowid}&chatId=${props.chatId}&fileName=${item.name}`;
       const src = (item.data as string) ?? fileData;
@@ -484,6 +484,11 @@ export const BotBubble = (props: Props) => {
               </div>
             )}
             {props.message.message && <span ref={setBotMessageRef} />}
+            {props.message.videoUrl && (
+              <video controls src={props.message.videoUrl} style={{ "margin-top": '8px', width: '100%' }}>
+                Your browser does not support the audio element.
+              </video>
+            )}
           </div>
           {props.message.action && (
             <div class="px-4 py-2 flex flex-row justify-start space-x-2">

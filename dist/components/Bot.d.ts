@@ -77,6 +77,7 @@ export type MessageType = {
     id?: string;
     followUpPrompts?: string;
     dateTime?: string;
+    videoUrl?: string;
 };
 type observerConfigType = (accessor: string | boolean | object | MessageType[]) => void;
 export type observersConfigType = Record<'observeUserInput' | 'observeLoading' | 'observeMessages', observerConfigType>;
