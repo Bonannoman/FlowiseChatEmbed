@@ -17,9 +17,10 @@
 
 <body>
     <div id="root"></div>
+    <flowise-fullchatbot></flowise-fullchatbot>
     <script type="module">
         import Chatbot from './web.js';
-        Chatbot.init({
+        Chatbot.initFull({
           chatflowid: 'agent1',
           apiHost: 'https://embed.maxdiscipline.com/proxy',
         });
