@@ -61,11 +61,11 @@ export const BotBubble = (props: Props) => {
         try {
           const parsed = JSON.parse(props.message.message);
           parsedMessage = parsed.message;
-        } catch(e) {
-          console.log(e)
+        } catch (e) {
+          console.log(e);
         }
       } else {
-        parsedMessage = props.message.message
+        parsedMessage = props.message.message;
       }
       el.innerHTML = Marked.parse(parsedMessage);
 
@@ -500,7 +500,7 @@ export const BotBubble = (props: Props) => {
                   // If parsing fails, keep original message
                 }
               } else {
-                parsedMessage = props.message.message
+                parsedMessage = props.message.message;
                 videoUrl = props.message.videoUrl;
               }
 
