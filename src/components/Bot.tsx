@@ -186,7 +186,7 @@ export type LeadsConfig = {
   successMessage?: string;
 };
 
-const defaultWelcomeMessage = 'Hi there! How can I help?';
+const defaultWelcomeMessage = 'Hi there! My name is Max Discipline, your personal, on-demand trading mindset coach. How can I help you today?';
 
 /*const sourceDocuments = [
     {
@@ -600,9 +600,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       let extractedFileUploads = [];
       let videoLink;
 
-      if (typeof item.message === 'string' && item.message.trim().startsWith('{')) {
+      if (typeof parsedMessage === 'string' && parsedMessage.trim().startsWith('{')) {
         try {
-          const json = JSON.parse(item.message);
+          const json = JSON.parse(parsedMessage);
           console.log('In message', json);
           parsedMessage = json.message ?? '';
           extractedFileUploads = json.fileUploads ?? [];
@@ -2409,29 +2409,27 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
           {props.showTitle ? (
             <div
-              class="flex flex-row items-center w-full h-[50px] absolute top-0 left-0 z-10"
+              class="flex flex-row items-center w-full h-[50px] absolute top-0 left-0 z-10 pl-4"
               style={{
                 background: props.titleBackgroundColor || props.bubbleBackgroundColor || defaultTitleBackgroundColor,
                 color: props.titleTextColor || props.bubbleTextColor || defaultBackgroundColor,
                 'border-top-left-radius': props.isFullPage ? '0px' : '6px',
                 'border-top-right-radius': props.isFullPage ? '0px' : '6px',
+                "justify-content":"space-between"
               }}
             >
               <Show when={props.titleAvatarSrc}>
                 <>
-                  <div style={{ width: '15px' }} />
-                  <Avatar initialAvatarSrc={props.titleAvatarSrc} />
+                  <Avatar initialAvatarSrc={props.titleAvatarSrc}/>
                 </>
               </Show>
               <Show when={props.title}>
-                <span class="px-3 whitespace-pre-wrap font-semibold max-w-full">{props.title}</span>
+                <span class="px-3 whitespace-pre-wrap font-semibold max-w-full text-3xl">{props.title}</span>
               </Show>
-              <div style={{ flex: 1 }} />
               <DeleteButton
                 sendButtonColor={props.bubbleTextColor}
                 type="button"
                 isDisabled={messages().length === 1}
-                class="my-2 ml-2"
                 on:click={clearChat}
               >
                 <span style={{ 'font-family': 'Poppins, sans-serif' }}>Clear</span>
