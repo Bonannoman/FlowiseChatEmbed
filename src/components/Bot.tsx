@@ -2415,23 +2415,18 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
                 color: props.titleTextColor || props.bubbleTextColor || defaultBackgroundColor,
                 'border-top-left-radius': props.isFullPage ? '0px' : '6px',
                 'border-top-right-radius': props.isFullPage ? '0px' : '6px',
-                "justify-content":"space-between"
+                'justify-content': 'space-between',
               }}
             >
               <Show when={props.titleAvatarSrc}>
                 <>
-                  <Avatar initialAvatarSrc={props.titleAvatarSrc}/>
+                  <Avatar initialAvatarSrc={props.titleAvatarSrc} />
                 </>
               </Show>
               <Show when={props.title}>
                 <span class="px-3 whitespace-pre-wrap font-semibold max-w-full text-3xl">{props.title}</span>
               </Show>
-              <DeleteButton
-                sendButtonColor={props.bubbleTextColor}
-                type="button"
-                isDisabled={messages().length === 1}
-                on:click={clearChat}
-              >
+              <DeleteButton sendButtonColor={props.bubbleTextColor} type="button" isDisabled={messages().length === 1} on:click={clearChat}>
                 <span style={{ 'font-family': 'Poppins, sans-serif' }}>Clear</span>
               </DeleteButton>
             </div>
