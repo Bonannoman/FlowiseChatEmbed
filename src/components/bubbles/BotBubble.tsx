@@ -56,7 +56,18 @@ export const BotBubble = (props: Props) => {
 
   const setBotMessageRef = (el: HTMLSpanElement) => {
     if (el) {
-      el.innerHTML = Marked.parse(props.message.message);
+      let parsedMessage;
+      if (props.message.message.trim().startsWith('{')) {
+        try {
+          const parsed = JSON.parse(props.message.message);
+          parsedMessage = parsed.message;
+        } catch(e) {
+          console.log(e)
+        }
+      } else {
+        parsedMessage = props.message.message
+      }
+      el.innerHTML = Marked.parse(parsedMessage);
 
       // Apply textColor to all links, headings, and other markdown elements except code
       const textColor = props.textColor ?? defaultTextColor;
@@ -475,12 +486,36 @@ export const BotBubble = (props: Props) => {
                 </For>
               </div>
             )}
-            {props.message.message && <span ref={setBotMessageRef} />}
-            {props.message.videoUrl && (
-              <video controls src={props.message.videoUrl} style={{ 'margin-top': '8px', width: '100%' }}>
-                Your browser does not support the audio element.
-              </video>
-            )}
+            {(() => {
+              let parsedMessage;
+              let videoUrl;
+
+              // Try to parse JSON if it looks like a JSON string
+              if (props.message.message.trim().startsWith('{')) {
+                try {
+                  const parsed = JSON.parse(props.message.message);
+                  parsedMessage = parsed.message;
+                  videoUrl = parsed.videoUrl;
+                } catch (e) {
+                  // If parsing fails, keep original message
+                }
+              } else {
+                parsedMessage = props.message.message
+                videoUrl = props.message.videoUrl;
+              }
+
+              return (
+                <>
+                  {parsedMessage && <span ref={setBotMessageRef} />}
+
+                  {videoUrl && (
+                    <video controls src={videoUrl} style={{ 'margin-top': '8px', width: '100%' }}>
+                      Your browser does not support the video element.
+                    </video>
+                  )}
+                </>
+              );
+            })()}
           </div>
           {props.message.action && (
             <div class="px-4 py-2 flex flex-row justify-start space-x-2">
