@@ -1712,7 +1712,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   );
 
   const previewDisplay = (item: FilePreview) => {
-    
     if (item.mime.startsWith('image/')) {
       return (
         <button
