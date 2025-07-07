@@ -477,18 +477,10 @@ export const BotBubble = (props: Props) => {
               'font-size': props.fontSize ? `${props.fontSize}px` : `${defaultFontSize}px`,
             }}
           >
-            {props.message.fileUploads && props.message.fileUploads.length > 0 && (
-              <div class="flex flex-col items-start flex-wrap w-full  mr-10 mb-1">
-                <For each={props.message.fileUploads}>
-                  {(item) => {
-                    return renderFileUploads(item);
-                  }}
-                </For>
-              </div>
-            )}
             {(() => {
               let parsedMessage;
               let videoUrl;
+              let parsedFileUploads = [];
 
               // Try to parse JSON if it looks like a JSON string
               if (props.message.message.trim().startsWith('{')) {
@@ -496,16 +488,23 @@ export const BotBubble = (props: Props) => {
                   const parsed = JSON.parse(props.message.message);
                   parsedMessage = parsed.message;
                   videoUrl = parsed.videoUrl;
+                  parsedFileUploads = parsed.fileUploads || [];
                 } catch (e) {
                   // If parsing fails, keep original message
                 }
               } else {
                 parsedMessage = props.message.message;
                 videoUrl = props.message.videoUrl;
+                parsedFileUploads = props.message.fileUploads || [];
               }
 
               return (
                 <>
+                  {parsedFileUploads.length > 0 && (
+                    <div class="flex flex-col items-start flex-wrap w-full mr-10 mb-1">
+                      <For each={parsedFileUploads}>{(item) => renderFileUploads(item)}</For>
+                    </div>
+                  )}
                   {parsedMessage && <span ref={setBotMessageRef} />}
 
                   {videoUrl && (
