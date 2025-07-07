@@ -603,7 +603,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       if (typeof parsedMessage === 'string' && parsedMessage.trim().startsWith('{')) {
         try {
           const json = JSON.parse(parsedMessage);
-          console.log('In message', json);
           parsedMessage = json.message ?? '';
           extractedFileUploads = json.fileUploads ?? [];
           videoLink = json.videoUrl;
@@ -613,7 +612,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       }
 
       const finalFileUploads = item.fileUploads?.length ? item.fileUploads : extractedFileUploads;
-      console.log(finalFileUploads, 'finalFileUploads', videoLink);
 
       return {
         ...item,
@@ -2327,6 +2325,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   );
 
   const previewDisplay = (item: FilePreview) => {
+    
     if (item.mime.startsWith('image/')) {
       return (
         <button

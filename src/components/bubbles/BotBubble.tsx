@@ -67,6 +67,9 @@ export const BotBubble = (props: Props) => {
       if (props.message.message.trim().startsWith('{')) {
         try {
           const parsed = JSON.parse(props.message.message);
+          if (parsed.message && typeof parsed.message === 'string' && parsed.message.trim().startsWith('{')) {
+            parsed.message = JSON.parse(parsed.message);
+          }
           parsedMessage = parsed.message;
         } catch (e) {
           console.log(e);
@@ -362,7 +365,6 @@ export const BotBubble = (props: Props) => {
       </>
     );
   };
-  console.log(props, 'props');
 
   const formatDateTime = (dateTimeString: string | undefined, showDate: boolean | undefined, showTime: boolean | undefined) => {
     if (!dateTimeString) return '';
@@ -497,7 +499,7 @@ export const BotBubble = (props: Props) => {
                   videoUrl = parsed.videoUrl;
                   parsedFileUploads = parsed.fileUploads || [];
                 } catch (e) {
-                  // If parsing fails, keep original message
+                  console.log(e);
                 }
               } else {
                 parsedMessage = props.message.message;
